@@ -1,0 +1,64 @@
+import {test,expect} from '@playwright/test'
+
+test('Dropdown handle', async({page}) => {
+
+    await page.goto('https://testautomationpractice.blogspot.com/')
+
+    //Different ways to select options from the page 
+
+    //await page.locator('#country').selectOption({value: "india"}) by using value
+    //await page.locator('#country').selectOption('india') by using visible text
+    //await page.locator('#country').selectOption({index: 9}) //by using index
+    //await page.locator('#country').selectOption({label: 'India'}) //by using lable 
+    //await page.selectOption('#country','India')
+
+    //assertions
+
+    //check the number of options
+
+    //const options= await page.$$('#country option')
+    //console.log("number of options:", options.length)
+    //await expect(options.length).toBe(10)
+
+    //const content=await page.locator('#country').textContent()
+    //await expect(content.includes('India')).toBeTruthy()
+
+    //check the presence of options is and list of options by using looping statement
+
+    /*const options=await page.$$('#country option')
+    let status=false
+
+    for(const option of options)
+    {
+        //console.log(await option.textContent())
+        let value= await option.textContent()
+        if (value.includes('India'))
+        {
+            status=true
+            break;
+        }
+
+
+    }
+    expect(status).toBeTruthy
+*/
+
+//select option from dropdown using loop
+const options=await page.$$('#country option')
+for(const option of options)
+    {
+        //console.log(await option.textContent())
+        let value= await option.textContent()
+        value=value.trim()
+        if (value.includes('India'))
+        {
+            await page.locator('#country').selectOption({label: value})
+            break;
+        }
+
+
+}
+
+await page.waitForTimeout(5000)
+
+})
